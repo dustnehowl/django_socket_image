@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Streaming with Socket</title>
+    <style>
+        video {
+            transform: scaleX(-1);
+            width: 224px;
+            height: 224px;
+        }
+    </style>
+</head>
+<body>
+    <div id="camera-stream"></div>
+    {{ room_name|json_script:"room-name" }}
+    <script>
+        var cameraStream = document.createElement('video');
+        cameraStream.setAttribute('autoplay', '');
+        cameraStream.setAttribute('muted', '');
+        cameraStream.setAttribute('playsinline', '');
+        document.getElementById('camera-stream').appendChild(cameraStream);
+
+        var constraints = { audio: false, video: true };
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(function(stream) {
+                cameraStream.srcObject = stream;
+
+                const roomName = JSON.parse(document.getElementById('room-name').textContent);
+                const chatSocket = new WebSocket(
+                    'ws://'
+                    + window.location.host
+                    + '/ws/chat/'
+                    + 'faceId'
+                    + '/'
+                );
+
+
+                chatSocket.onopen = function(e) {
+                    console.log('Socket connection established.');
+                };
+
+                chatSocket.onclose = function(e) {
+                    console.error('Socket closed unexpectedly.');
+                };
+
+                setInterval(function() {
+                    var canvas = document.createElement('canvas');
+                    var context = canvas.getContext('2d');
+                    canvas.width = 224;
+                    canvas.height = 224;
+                    context.drawImage(cameraStream, 0, 0, canvas.width, canvas.height);
+
+                    canvas.toBlob(function(blob) {
+                        chatSocket.send(blob);
+                    }, 'image/jpeg', 0.9);
+                }, 200);
+            })
+            .catch(function(err) {
+                console.error(err);
+            });
+    </script>
+</body>
+</html>
