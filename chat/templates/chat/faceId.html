@@ -7,8 +7,8 @@
     <style>
         video {
             transform: scaleX(-1);
-            width: 224px;
-            height: 224px;
+            width: 750px;
+            height: 750px;
         }
     </style>
 </head>
@@ -48,8 +48,8 @@
                 setInterval(function() {
                     var canvas = document.createElement('canvas');
                     var context = canvas.getContext('2d');
-                    canvas.width = 224;
-                    canvas.height = 224;
+                    canvas.width = 750;
+                    canvas.height = 750;
                     context.drawImage(cameraStream, 0, 0, canvas.width, canvas.height);
 
                     canvas.toBlob(function(blob) {
