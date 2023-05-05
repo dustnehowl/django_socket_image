@@ -33,12 +33,14 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'daphne',
     'chat',
+    'attendance.apps.AttendanceConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
 ]
 
 ASGI_APPLICATION = "mysite.asgi.application"
@@ -79,11 +81,21 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "django_db",
+        "USER": "root",
+        "PASSWORD": "1234",
+        "HOST": "127.0.0.1",
+        "PORT": "3306",
     }
 }
+
+# AWS S3 설정
+AWS_ACCESS_KEY_ID = 'AKIAVJL3SXU76YJQRVLB'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'slowybucket'
+AWS_S3_REGION_NAME = 'ap-northeast-2'
 
 
 # Password validation

@@ -1,4 +1,4 @@
-name: attendance
+name: socket_TCP
 channels:
   - conda-forge
   - defaults

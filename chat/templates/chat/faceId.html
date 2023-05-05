@@ -45,6 +45,14 @@
                     console.error('Socket closed unexpectedly.');
                 };
 
+                chatSocket.onmessage = function(e) {
+                    let data = JSON.parse(e.data);
+                    if (data.type === 'res') {
+                        // res 데이터 처리
+                        console.log(data.data);
+                    }
+                };
+
                 setInterval(function() {
                     var canvas = document.createElement('canvas');
                     var context = canvas.getContext('2d');
@@ -55,7 +63,7 @@
                     canvas.toBlob(function(blob) {
                         chatSocket.send(blob);
                     }, 'image/jpeg', 0.9);
-                }, 200);
+                }, 17);
             })
             .catch(function(err) {
                 console.error(err);
