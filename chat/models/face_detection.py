@@ -20,6 +20,8 @@ class FaceDetector:
         return cls.__instance
 
     def detect(self, image, crop=False, output_path=None):
+        if image.shape[2] == 4:
+            image = cv2.cvtColor(image, cv2.COLOR_BGRA2BGR)
         image = imutils.resize(image, width=500)
         (H, W) = image.shape[:2]
         blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300), (104.0, 177.0, 123.0))
